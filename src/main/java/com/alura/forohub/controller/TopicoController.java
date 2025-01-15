@@ -1,5 +1,6 @@
 package com.alura.forohub.controller;
 
+import com.alura.forohub.infra.errores.ValidacionException;
 import com.alura.forohub.model.dto.*;
 import com.alura.forohub.model.entity.Topico;
 import com.alura.forohub.repository.TopicoRepository;
@@ -29,7 +30,7 @@ public class TopicoController {
         Topico topico = new Topico(topicoRequestDTO);
 
         if (topicoRepository.existsByTituloAndMensaje(topico.getTitulo(), topico.getMensaje())) {
-            return ResponseEntity.badRequest().body(new BadRequestDTO("Warning", "Ya existe un tópico con el mismo título y mensaje."));
+            throw new ValidacionException("Ya existe un tópico con el mismo título y mensaje.");
         }
 
         topico = topicoRepository.save(topico);
@@ -45,32 +46,23 @@ public class TopicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> obtenerTopico(@PathVariable Long id) {
-        Optional<Topico> topico = topicoRepository.findById(id);
-        return topico
-                .<ResponseEntity<ResponseDTO>>map(value -> ResponseEntity.ok(new TopicoResponseDTO(value)))
-                .orElseGet(() -> ResponseEntity.badRequest().body(new BadRequestDTO("Error", "No se encontró ningún tópico con el ID " + id + ".")));
+        Topico topico = topicoRepository.getReferenceById(id);
+        return ResponseEntity.ok(new TopicoResponseDTO(topico));
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity<ResponseDTO> actualizarTopico(@RequestBody @Valid TopicoUpdateRequestDTO topicoUpdateRequestDTO) {
-        Optional<Topico> topico = topicoRepository.findById(topicoUpdateRequestDTO.id());
-
-        if (topico.isPresent()){
-            topico.get().actualizarDatos(topicoUpdateRequestDTO);
-            return ResponseEntity.ok(new TopicoResponseDTO(topico.get()));
-        }
-        return ResponseEntity.badRequest().body(new BadRequestDTO("Error", "No se encontró ningún tópico con el ID " + topicoUpdateRequestDTO.id() + "."));
+        Topico topico = topicoRepository.getReferenceById(topicoUpdateRequestDTO.id());
+        topico.actualizarDatos(topicoUpdateRequestDTO);
+        return ResponseEntity.ok(new TopicoResponseDTO(topico));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<ResponseDTO> eliminarTopico(@PathVariable Long id) {
-        Optional<Topico> topico = topicoRepository.findById(id);
-        if (topico.isPresent()) {
-            topicoRepository.delete(topico.get());
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.badRequest().body(new BadRequestDTO("Error", "No se encontró ningún tópico con el ID " + id + "."));
+        Topico topico = topicoRepository.getReferenceById(id);
+        topicoRepository.delete(topico);
+        return ResponseEntity.noContent().build();
     }
 }
