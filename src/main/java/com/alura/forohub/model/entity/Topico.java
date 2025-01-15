@@ -27,9 +27,6 @@ public class Topico {
     private StatusEnum status;
     private String curso;
 
-    public Topico() {
-    }
-
     public Topico(TopicoRequestDTO topicoRequestDTO) {
         this.titulo = topicoRequestDTO.titulo();
         this.mensaje = topicoRequestDTO.mensaje();
@@ -42,62 +39,5 @@ public class Topico {
         this.titulo = topicoUpdateRequestDTO.titulo() == null ? this.titulo : topicoUpdateRequestDTO.titulo();
         this.mensaje = topicoUpdateRequestDTO.mensaje() == null ? this.mensaje : topicoUpdateRequestDTO.mensaje();
         this.curso = topicoUpdateRequestDTO.curso()== null ? this.curso : topicoUpdateRequestDTO.curso();
-    }
-
-    public Topico(Long id, String titulo, String mensaje, LocalDateTime fechaCreacion, StatusEnum status, String curso) {
-        this.id = id;
-        this.titulo = titulo;
-        this.mensaje = mensaje;
-        this.fechaCreacion = fechaCreacion;
-        this.status = status;
-        this.curso = curso;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public void setCurso(String curso) {
-        this.curso = curso;
     }
 }
