@@ -1,0 +1,19 @@
+meta {
+  name: Registrar tópico
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/topicos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "Consulta Base de Datos MySQL",
+    "mensaje": "Estoy trabajando con una base de datos en MySQL, pero no consigo traer los datos de mi tabla llamada 'topicos' ¿Alguien puede ayudarme?.",
+    "curso": "Bases de datos"
+  }
+}
