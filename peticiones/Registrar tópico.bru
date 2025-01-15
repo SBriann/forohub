@@ -10,6 +10,10 @@ post {
   auth: none
 }
 
+headers {
+  Authorization: {{bearerToken}}
+}
+
 body:json {
   {
     "titulo": "Consulta Base de Datos MySQL",
